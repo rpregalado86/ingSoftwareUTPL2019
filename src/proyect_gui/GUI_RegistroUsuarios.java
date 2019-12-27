@@ -333,7 +333,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                     
                     numeroEditar=Integer.parseInt(""+tabla.getValueAt(tabla.getSelectedRow(), 0));
                     numeroEliminar=numeroEditar;
-                    System.out.println("Editar "+numeroEditar+" Eliminar "+numeroEliminar);
+                    System.out.println("Editar ="+numeroEditar+" Eliminar "+numeroEliminar);
                     txt_u_id.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 1));
                     txt_u_nombre.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 2));
                     txt_u_apellido.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 3));

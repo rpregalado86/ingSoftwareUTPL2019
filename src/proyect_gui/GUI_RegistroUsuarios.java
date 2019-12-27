@@ -29,8 +29,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     public GUI_RegistroUsuarios() throws IOException{
        initComponents();
         HabilitarIngreso(false);
-        /*verificarArchivo();
-        asignarEventoMouse();*/
+        verificarArchivo();
+        asignarEventoMouse();
     }
       @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -50,6 +50,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txt_u_password = new javax.swing.JTextField();
         txt_u_id = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -101,6 +102,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
 
         jLabel3.setText("Clave :");
 
+        jLabel10.setText("Digite boton \"Nuevo\" para habilitar ingreso de tados");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -126,7 +129,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                                 .addGap(32, 32, 32)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
-                                    .addComponent(txt_u_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(txt_u_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabel10))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -152,7 +156,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_u_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_u_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel10))
         );
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -169,7 +174,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
 
         btn_u_actualizar.setText("Listado Completo");
 
-        jLabel9.setText("jLabel9");
+        jLabel9.setText("Ingrese numero de cedula del usuario a buscar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -282,7 +287,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                 .addComponent(btn_u_eliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_u_cancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_u_salir)
                 .addContainerGap())
         );
@@ -298,8 +303,10 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(41, 41, 41)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -309,8 +316,9 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -360,6 +368,62 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         txt_u_password.setText("");
     }
     
+    private void verificarArchivo() throws IOException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!archivo.exists()){
+            archivo.createNewFile();
+            System.out.println("Archivo TXT creado en el Directorio local del proyecto");
+        }
+        else
+        {
+            System.out.println("El archivo ya existe");
+            leerArchivo();
+        }
+    }
+    
+    private void leerArchivo() throws FileNotFoundException, IOException{
+        String linea = null;
+        int numeroRegistros=0;
+        BufferedReader leerFichero = new BufferedReader(new FileReader(archivo));
+        while ((linea = leerFichero.readLine()) != null) { 
+            numeroRegistros+=1;
+        }
+        leerFichero.close();
+        if(numeroRegistros==0)
+            System.out.println("ARCHIVO USUARIO.TXT VACIO");
+        else{
+            String [][]datos = new String[numeroRegistros][10];
+            int posicion=0;
+            String line = null;
+            BufferedReader leerArchivo = new BufferedReader(new FileReader(archivo));
+            while ((line = leerArchivo.readLine()) != null) {   
+                StringTokenizer mistokens = new StringTokenizer(line,"\t");
+                datos[posicion][0] = mistokens.nextToken().trim();
+                datos[posicion][1] = mistokens.nextToken().trim();
+                datos[posicion][2] = mistokens.nextToken().trim();
+                datos[posicion][3] = mistokens.nextToken().trim();
+                datos[posicion][4] = mistokens.nextToken().trim();
+                posicion+=1;
+            }
+            leerArchivo.close();
+            DefaultTableModel modelo = (DefaultTableModel) table_usuario.getModel();
+            limpiarTabla(modelo);
+            for (int i = 0; i < datos.length; i++) {
+                String []data = new String[11];
+                data[0]=String.valueOf(i+1);
+                for (int j = 0; j < datos[i].length; j++) {
+                    data[(j+1)]=datos[i][j];
+                }
+                modelo.addRow(data);
+            }            
+        }
+    }
+    public void limpiarTabla(DefaultTableModel modelo){   
+        for (int i = table_usuario.getRowCount() -1; i >= 0; i--){ 
+            modelo.removeRow(i); 
+        } 
+    }
+    
     private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed
        
     }//GEN-LAST:event_btn_u_guardarActionPerformed
@@ -372,8 +436,15 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_u_salirActionPerformed
 
     private void btn_u_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_nuevoActionPerformed
-             
-        
+        HabilitarIngreso(true);
+        limpiarCajasTexto();
+        btn_u_nuevo.setEnabled(false);
+        btn_u_guardar.setEnabled(true);
+        btn_u_editar.setEnabled(false);
+        btn_u_cancelar.setEnabled(true);
+        btn_u_eliminar.setEnabled(false);    
+        txt_u_id.setFocusable(true);
+        opcionBoton="Nuevo";                
     }//GEN-LAST:event_btn_u_nuevoActionPerformed
 
     private void btn_u_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_eliminarActionPerformed
@@ -393,7 +464,13 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_u_buscarActionPerformed
 
     private void btn_u_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_cancelarActionPerformed
-             // TODO add your handling code here:
+        HabilitarIngreso(false);
+        limpiarCajasTexto();
+        btn_u_nuevo.setEnabled(true);
+        btn_u_guardar.setEnabled(false);
+        btn_u_editar.setEnabled(false);
+        btn_u_cancelar.setEnabled(false);
+        btn_u_eliminar.setEnabled(false);             
     }//GEN-LAST:event_btn_u_cancelarActionPerformed
     
    
@@ -427,6 +504,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton btn_u_nuevo;
     private javax.swing.JButton btn_u_salir;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

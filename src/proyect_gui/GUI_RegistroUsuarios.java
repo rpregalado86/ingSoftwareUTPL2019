@@ -28,8 +28,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     
     public GUI_RegistroUsuarios() throws IOException{
        initComponents();
-        /*HabilitarIngreso(false);
-        verificarArchivo();
+        HabilitarIngreso(false);
+        /*verificarArchivo();
         asignarEventoMouse();*/
     }
       @SuppressWarnings("unchecked")
@@ -321,8 +321,44 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
-     
+   public void asignarEventoMouse(){
+       table_usuario.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent Mouse_event){
+                JTable tabla = (JTable)Mouse_event.getSource();
+                Point point = Mouse_event.getPoint();
+                int row = tabla.rowAtPoint(point);
+                if(Mouse_event.getClickCount()==2){
+                    btn_u_editar.setEnabled(true);
+                    btn_u_eliminar.setEnabled(true);
+                    
+                    numeroEditar=Integer.parseInt(""+tabla.getValueAt(tabla.getSelectedRow(), 0));
+                    numeroEliminar=numeroEditar;
+                    System.out.println("Editar ="+numeroEditar+" Eliminar "+numeroEliminar);
+                    txt_u_id.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 1));
+                    txt_u_nombre.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 2));
+                    txt_u_apellido.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 3));
+                    txt_u_user.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 4));
+                    txt_u_password.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 5));
+                }
+            }
+        });
+    }
+    
+    public void HabilitarIngreso(boolean b){
+        txt_u_id.setEnabled(b);
+        txt_u_nombre.setEnabled(b);
+        txt_u_apellido.setEnabled(b);
+        txt_u_user.setEnabled(b);
+        txt_u_password.setEnabled(b);
+    }
+
+    public void limpiarCajasTexto(){
+        txt_u_id.setText("");
+        txt_u_nombre.setText("");
+        txt_u_apellido.setText("");
+        txt_u_user.setText("");
+        txt_u_password.setText("");
+    }
     
     private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed
        

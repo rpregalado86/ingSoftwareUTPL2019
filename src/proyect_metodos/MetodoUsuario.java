@@ -13,8 +13,8 @@ public class MetodoUsuario {
 
    private void verificarArchivo() throws IOException {
         
-        if(!archivoUser.exists()){
-            archivoUser.createNewFile();
+        if(!archivoUser.exists()){//Verifica si existe el archivo
+            archivoUser.createNewFile();// En caso que no exista lo crea.
             System.out.println("Archivo TXT creado localmente en el directorio del proyecto");
         }
         else{

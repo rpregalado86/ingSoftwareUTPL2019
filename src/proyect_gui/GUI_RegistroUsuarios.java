@@ -180,6 +180,11 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         });
 
         btn_u_actualizar.setText("Listado Completo");
+        btn_u_actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_u_actualizarActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Ingrese numero de cedula del usuario a buscar");
 
@@ -391,11 +396,11 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     private void leerArchivo() throws FileNotFoundException, IOException{
         String linea = null;
         int numeroRegistros=0;
-        BufferedReader leerFichero = new BufferedReader(new FileReader(archivo));
-        while ((linea = leerFichero.readLine()) != null) { 
+        BufferedReader leerFicheroUsuario = new BufferedReader(new FileReader(archivo));
+        while ((linea = leerFicheroUsuario.readLine()) != null) { 
             numeroRegistros+=1;
         }
-        leerFichero.close();
+        leerFicheroUsuario.close();
         if(numeroRegistros==0)
             System.out.println("ARCHIVO USUARIO.TXT VACIO");
         else{
@@ -534,7 +539,26 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_u_editarActionPerformed
 
     private void btn_u_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_buscarActionPerformed
-        // TODO add your handling code here:
+        String buscar = String.valueOf(txt_u_id_busca.getText());
+        System.out.println("Comprobar cedula a buscar es: "+buscar);
+        try {
+            leerArchivo();
+        } catch (IOException ex) {
+            Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String [][]datos = new String[table_usuario.getRowCount()][6];
+        for (int i = 0; i < table_usuario.getRowCount(); i++) {
+            for (int j = 0; j < 6; j++) {
+                datos[i][j]=String.valueOf(table_usuario.getValueAt(i, j)) ;
+            }
+        }
+        DefaultTableModel modelo = (DefaultTableModel) table_usuario.getModel();
+        limpiarTabla(modelo);
+        for (int i = 0; i < datos.length; i++) {
+            if (datos[i][1].equals(buscar)){
+                modelo.addRow(new Object[]{datos[i][0],datos[i][1],datos[i][2],datos[i][3],datos[i][4],datos[i][5]});
+            }
+        }
     }//GEN-LAST:event_btn_u_buscarActionPerformed
 
     private void btn_u_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_cancelarActionPerformed
@@ -546,6 +570,14 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         btn_u_cancelar.setEnabled(false);
         btn_u_eliminar.setEnabled(false);             
     }//GEN-LAST:event_btn_u_cancelarActionPerformed
+
+    private void btn_u_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_actualizarActionPerformed
+        try {
+            leerArchivo();
+        } catch (IOException ex) {
+            Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }//GEN-LAST:event_btn_u_actualizarActionPerformed
     
    
     

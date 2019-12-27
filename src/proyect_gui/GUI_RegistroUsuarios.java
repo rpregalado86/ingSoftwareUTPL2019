@@ -70,21 +70,28 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
 
         table_usuario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "NOMBRE", "APELLIDO", "TIPO", "CEDULA", "EDAD"
+                "#", "CEDULA", "NOMBRE", "APELLIDO", "USUARIO", "PASSWORD"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(table_usuario);
@@ -424,8 +431,75 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         } 
     }
     
+    private void ingresarPersonal() throws FileNotFoundException, UnsupportedEncodingException, IOException{
+        BufferedWriter escribirArchivo = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivo,true),"utf-8"));
+        escribirArchivo.write(txt_u_id.getText()+"\t"+txt_u_nombre.getText()+"\t"+txt_u_apellido.getText()+"\t"+txt_u_user.getText()+"\t"+txt_u_password.getText()+"\n");
+        JOptionPane.showMessageDialog(null, "Datos usuario registrado correctamente");
+        escribirArchivo.close();
+        leerArchivo();
+    }
+    
+    public void almacenarFicheroUsuario() throws IOException{
+        archivo.delete();
+        archivo.createNewFile();
+        BufferedWriter escribirArchivo = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivo,true),"utf-8"));
+        for (int i = 0; i < table_usuario.getRowCount(); i++) {
+            escribirArchivo.write(table_usuario.getValueAt(i, 1)+"\t"+table_usuario.getValueAt(i, 2)+"\t"+table_usuario.getValueAt(i, 3)+"\t"+table_usuario.getValueAt(i, 4)+"\t"+table_usuario.getValueAt(i, 5)+"\n");
+        }
+        escribirArchivo.close();
+        leerArchivo();
+    }
+    
+    public void efectuarEdicion(){
+        /*for (int i = 0; i < jTable1.getRowCount(); i++) {
+            if(numeroEditar==Integer.parseInt((String)jTable1.getValueAt(i, 0))){
+                jTable1.setValueAt(numeroEditar, i, 0);
+                jTable1.setValueAt(txtCedula.getText(), i, 1);
+                jTable1.setValueAt(txtNombre.getText(), i, 2);
+                jTable1.setValueAt(txtApellidoPaterno.getText(), i, 3);
+                jTable1.setValueAt(txtApellidoMaterno.getText(), i, 4);
+                jTable1.setValueAt(txtFechaNacimiento.getText(), i, 5);
+                jTable1.setValueAt(txtDireccion.getText(), i, 6);
+                jTable1.setValueAt(txtCelular.getText(), i, 7);
+                jTable1.setValueAt(txtConvencional.getText(), i, 8);
+                jTable1.setValueAt(txtFechaIngreso.getText(), i, 9);
+                jTable1.setValueAt(txtCargo.getText(), i, 10);
+                break;
+            }
+        }*/
+    }
+    
     private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed
-       
+           if (!(txt_u_id.getText().equals("")||txt_u_nombre.getText().equals("")||txt_u_apellido.getText().equals("")||txt_u_user.getText().equals("")||txt_u_password.getText().equals(""))) {
+            if(opcionBoton.equals("Nuevo"))
+                try {
+                    ingresarPersonal();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            else if (opcionBoton.equals("Editar")) {
+                efectuarEdicion();
+                try {
+                    almacenarFicheroUsuario();
+                } catch (IOException ex) {
+                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null, "REGISTRO USUARIO ACTUALIZADO CORRECTAMENTE");
+            }
+            HabilitarIngreso(false);
+            limpiarCajasTexto();
+            btn_u_nuevo.setEnabled(true);
+            btn_u_guardar.setEnabled(false);
+            btn_u_editar.setEnabled(false);
+            btn_u_cancelar.setEnabled(false);
+            btn_u_eliminar.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "TODOS LOS CAMPOS SON REQUERIDOS");
+        }
     }//GEN-LAST:event_btn_u_guardarActionPerformed
 
     private void btn_u_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_salirActionPerformed

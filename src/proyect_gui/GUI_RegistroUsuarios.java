@@ -27,8 +27,11 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     int numeroEliminar=0;
     
     public GUI_RegistroUsuarios() throws IOException{
-       initComponents();
+        initComponents();
         HabilitarIngreso(false);
+        btn_u_editar.setEnabled(false);
+        btn_u_guardar.setEnabled(false);
+        btn_u_eliminar.setEnabled(false);
         verificarArchivo();
         asignarEventoMouse();
     }
@@ -65,6 +68,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         btn_u_eliminar = new javax.swing.JButton();
         btn_u_salir = new javax.swing.JButton();
         btn_u_cancelar = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -204,7 +208,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                         .addComponent(btn_u_actualizar))
                     .addComponent(jLabel8)
                     .addComponent(jLabel9))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,6 +308,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel11.setText("Para eliminar o editar un registro de doble clic sobre el registro a gestionar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -311,29 +317,36 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel11)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(41, 41, 41)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -350,6 +363,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                 if(Mouse_event.getClickCount()==2){
                     btn_u_editar.setEnabled(true);
                     btn_u_eliminar.setEnabled(true);
+                    btn_u_nuevo.setEnabled(false);
                     
                     numeroEditar=Integer.parseInt(""+tabla.getValueAt(tabla.getSelectedRow(), 0));
                     numeroEliminar=numeroEditar;
@@ -429,6 +443,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                 modelo.addRow(data);
             }            
         }
+        btn_u_nuevo.setEnabled(true);
     }
     public void limpiarTabla(DefaultTableModel modelo){   
         for (int i = table_usuario.getRowCount() -1; i >= 0; i--){ 
@@ -447,97 +462,31 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     public void almacenarFicheroUsuario() throws IOException{
         archivo.delete();
         archivo.createNewFile();
-        BufferedWriter escribirArchivo = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivo,true),"utf-8"));
+        BufferedWriter escribirArchivo = new BufferedWriter
+        (new OutputStreamWriter(new FileOutputStream(archivo,true),"utf-8"));
         for (int i = 0; i < table_usuario.getRowCount(); i++) {
-            escribirArchivo.write(table_usuario.getValueAt(i, 1)+"\t"+table_usuario.getValueAt(i, 2)+"\t"+table_usuario.getValueAt(i, 3)+"\t"+table_usuario.getValueAt(i, 4)+"\t"+table_usuario.getValueAt(i, 5)+"\n");
+            escribirArchivo.write(table_usuario.getValueAt(i, 1)+"\t"+table_usuario.getValueAt(i, 2)
+                    +"\t"+table_usuario.getValueAt(i, 3)+"\t"+table_usuario.getValueAt(i, 4)+"\t"
+                    +table_usuario.getValueAt(i, 5)+"\n");
         }
         escribirArchivo.close();
         leerArchivo();
     }
     
     public void efectuarEdicion(){
-        /*for (int i = 0; i < jTable1.getRowCount(); i++) {
-            if(numeroEditar==Integer.parseInt((String)jTable1.getValueAt(i, 0))){
-                jTable1.setValueAt(numeroEditar, i, 0);
-                jTable1.setValueAt(txtCedula.getText(), i, 1);
-                jTable1.setValueAt(txtNombre.getText(), i, 2);
-                jTable1.setValueAt(txtApellidoPaterno.getText(), i, 3);
-                jTable1.setValueAt(txtApellidoMaterno.getText(), i, 4);
-                jTable1.setValueAt(txtFechaNacimiento.getText(), i, 5);
-                jTable1.setValueAt(txtDireccion.getText(), i, 6);
-                jTable1.setValueAt(txtCelular.getText(), i, 7);
-                jTable1.setValueAt(txtConvencional.getText(), i, 8);
-                jTable1.setValueAt(txtFechaIngreso.getText(), i, 9);
-                jTable1.setValueAt(txtCargo.getText(), i, 10);
+        for (int i = 0; i < table_usuario.getRowCount(); i++) {
+            if(numeroEditar==Integer.parseInt((String)table_usuario.getValueAt(i, 0))){
+                table_usuario.setValueAt(numeroEditar, i, 0);
+                table_usuario.setValueAt(txt_u_id.getText(), i, 1);
+                table_usuario.setValueAt(txt_u_nombre.getText(), i, 2);
+                table_usuario.setValueAt(txt_u_apellido.getText(), i, 3);
+                table_usuario.setValueAt(txt_u_user.getText(), i, 4);
+                table_usuario.setValueAt(txt_u_password.getText(), i, 5);
                 break;
             }
-        }*/
+        }
     }
     
-    private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed
-           if (!(txt_u_id.getText().equals("")||txt_u_nombre.getText().equals("")||txt_u_apellido.getText().equals("")||txt_u_user.getText().equals("")||txt_u_password.getText().equals(""))) {
-            if(opcionBoton.equals("Nuevo"))
-                try {
-                    ingresarPersonal();
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            else if (opcionBoton.equals("Editar")) {
-                efectuarEdicion();
-                try {
-                    almacenarFicheroUsuario();
-                } catch (IOException ex) {
-                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                JOptionPane.showMessageDialog(null, "REGISTRO USUARIO ACTUALIZADO CORRECTAMENTE");
-            }
-            HabilitarIngreso(false);
-            limpiarCajasTexto();
-            btn_u_nuevo.setEnabled(true);
-            btn_u_guardar.setEnabled(false);
-            btn_u_editar.setEnabled(false);
-            btn_u_cancelar.setEnabled(false);
-            btn_u_eliminar.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "TODOS LOS CAMPOS SON REQUERIDOS");
-        }
-    }//GEN-LAST:event_btn_u_guardarActionPerformed
-
-    private void btn_u_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_salirActionPerformed
-
-        GUI_Principal b = new GUI_Principal();
-        b.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_btn_u_salirActionPerformed
-
-    private void btn_u_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_nuevoActionPerformed
-        HabilitarIngreso(true);
-        limpiarCajasTexto();
-        btn_u_nuevo.setEnabled(false);
-        btn_u_guardar.setEnabled(true);
-        btn_u_editar.setEnabled(false);
-        btn_u_cancelar.setEnabled(true);
-        btn_u_eliminar.setEnabled(false);    
-        txt_u_id.setFocusable(true);
-        opcionBoton="Nuevo";                
-    }//GEN-LAST:event_btn_u_nuevoActionPerformed
-
-    private void btn_u_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_eliminarActionPerformed
-       
-
-        
-    }//GEN-LAST:event_btn_u_eliminarActionPerformed
-
-    private void btn_u_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_editarActionPerformed
-       
-        
-        
-    }//GEN-LAST:event_btn_u_editarActionPerformed
-
     private void btn_u_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_buscarActionPerformed
         String buscar = String.valueOf(txt_u_id_busca.getText());
         System.out.println("Comprobar cedula a buscar es: "+buscar);
@@ -561,16 +510,6 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_u_buscarActionPerformed
 
-    private void btn_u_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_cancelarActionPerformed
-        HabilitarIngreso(false);
-        limpiarCajasTexto();
-        btn_u_nuevo.setEnabled(true);
-        btn_u_guardar.setEnabled(false);
-        btn_u_editar.setEnabled(false);
-        btn_u_cancelar.setEnabled(false);
-        btn_u_eliminar.setEnabled(false);             
-    }//GEN-LAST:event_btn_u_cancelarActionPerformed
-
     private void btn_u_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_actualizarActionPerformed
         try {
             leerArchivo();
@@ -578,6 +517,101 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
             Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }//GEN-LAST:event_btn_u_actualizarActionPerformed
+
+    private void btn_u_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_cancelarActionPerformed
+        HabilitarIngreso(false);
+        limpiarCajasTexto();
+        btn_u_nuevo.setEnabled(true);
+        btn_u_guardar.setEnabled(false);
+        btn_u_editar.setEnabled(false);
+        btn_u_cancelar.setEnabled(false);
+        btn_u_eliminar.setEnabled(false);
+    }//GEN-LAST:event_btn_u_cancelarActionPerformed
+
+    private void btn_u_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_salirActionPerformed
+
+        GUI_Principal b = new GUI_Principal();
+        b.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btn_u_salirActionPerformed
+
+    private void btn_u_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_eliminarActionPerformed
+        int respuesta = JOptionPane.showConfirmDialog(null, "CONFIRME SI DESEA ELIMINAR EL USUARIO SELECCIONADO", "ELIMINAR USUARIO", JOptionPane.YES_NO_OPTION);
+        if(respuesta == JOptionPane.YES_OPTION){
+            DefaultTableModel modelo = (DefaultTableModel) table_usuario.getModel();
+            for (int i = 0; i < table_usuario.getRowCount(); i++) {
+                if(numeroEliminar==Integer.parseInt(String.valueOf(table_usuario.getValueAt(i, 0)))){
+                    modelo.removeRow(i);
+                }
+            }
+            JOptionPane.showMessageDialog(null, "SE HA ELIMINADO REGISTRO CORRECTAMENTE");
+            btn_u_editar.setEnabled(false);
+            btn_u_eliminar.setEnabled(false);
+
+            try {
+                almacenarFicheroUsuario();
+            } catch (IOException ex) {
+                Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            System.out.println("No se ha eliminado nada");
+        }
+    }//GEN-LAST:event_btn_u_eliminarActionPerformed
+
+    private void btn_u_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_editarActionPerformed
+            opcionBoton = "Editar";
+            HabilitarIngreso(true);
+            btn_u_nuevo.setEnabled(false);
+            btn_u_guardar.setEnabled(true);
+            btn_u_editar.setEnabled(false);
+            btn_u_cancelar.setEnabled(true);
+            btn_u_eliminar.setEnabled(false);
+    }//GEN-LAST:event_btn_u_editarActionPerformed
+
+    private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed
+        if (!(txt_u_id.getText().equals("")||txt_u_nombre.getText().equals("")||txt_u_apellido.getText().equals("")||txt_u_user.getText().equals("")||txt_u_password.getText().equals(""))) {
+            if(opcionBoton.equals("Nuevo"))
+            try {
+                ingresarPersonal();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            else if (opcionBoton.equals("Editar")) {
+                efectuarEdicion();
+                try {
+                    almacenarFicheroUsuario();
+                } catch (IOException ex) {
+                    Logger.getLogger(GUI_RegistroUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null, "REGISTRO USUARIO ACTUALIZADO CORRECTAMENTE");
+            }
+            HabilitarIngreso(false);
+            limpiarCajasTexto();
+            btn_u_nuevo.setEnabled(true);
+            btn_u_guardar.setEnabled(false);
+            btn_u_editar.setEnabled(false);
+            btn_u_cancelar.setEnabled(false);
+            btn_u_eliminar.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "TODOS LOS CAMPOS SON REQUERIDOS");
+        }
+    }//GEN-LAST:event_btn_u_guardarActionPerformed
+
+    private void btn_u_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_nuevoActionPerformed
+        HabilitarIngreso(true);
+        limpiarCajasTexto();
+        btn_u_nuevo.setEnabled(false);
+        btn_u_guardar.setEnabled(true);
+        btn_u_editar.setEnabled(false);
+        btn_u_cancelar.setEnabled(true);
+        btn_u_eliminar.setEnabled(false);
+        txt_u_id.setFocusable(true);
+        opcionBoton="Nuevo";
+    }//GEN-LAST:event_btn_u_nuevoActionPerformed
     
    
     
@@ -611,6 +645,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton btn_u_salir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

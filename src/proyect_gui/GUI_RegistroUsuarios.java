@@ -27,8 +27,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     int numeroEliminar=0;
     
     public GUI_RegistroUsuarios() throws IOException{
-       /*initComponents();
-        HabilitarIngreso(false);
+       initComponents();
+        /*HabilitarIngreso(false);
         verificarArchivo();
         asignarEventoMouse();*/
     }
@@ -321,28 +321,8 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void asignarEventoMouse(){
-       /* table_usuario.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent Mouse_event){
-                JTable tabla = (JTable)Mouse_event.getSource();
-                Point point = Mouse_event.getPoint();
-                int row = tabla.rowAtPoint(point);
-                if(Mouse_event.getClickCount()==2){
-                    btn_u_editar.setEnabled(true);
-                    btn_u_eliminar.setEnabled(true);
-                    
-                    numeroEditar=Integer.parseInt(""+tabla.getValueAt(tabla.getSelectedRow(), 0));
-                    numeroEliminar=numeroEditar;
-                    System.out.println("Editar ="+numeroEditar+" Eliminar "+numeroEliminar);
-                    txt_u_id.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 1));
-                    txt_u_nombre.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 2));
-                    txt_u_apellido.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 3));
-                    txt_u_user.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 4));
-                    txt_u_password.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 5));
-                }
-            }
-        });*/
-    }
+   
+     
     
     private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed
        
@@ -356,7 +336,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_u_salirActionPerformed
 
     private void btn_u_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_nuevoActionPerformed
-        HabilitarIngreso(true);       
+             
         
     }//GEN-LAST:event_btn_u_nuevoActionPerformed
 
@@ -377,40 +357,13 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_u_buscarActionPerformed
 
     private void btn_u_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_cancelarActionPerformed
-        HabilitarIngreso(false);
-        limpiarCajasTexto();
-        btn_u_nuevo.setEnabled(true);
-        btn_u_guardar.setEnabled(false);
-        btn_u_editar.setEnabled(false);
-        btn_u_cancelar.setEnabled(false);
-        btn_u_eliminar.setEnabled(false);        // TODO add your handling code here:
+             // TODO add your handling code here:
     }//GEN-LAST:event_btn_u_cancelarActionPerformed
-    public void HabilitarIngreso(boolean b){
-        txt_u_id.setEnabled(b);
-        txt_u_nombre.setEnabled(b);
-        txt_u_apellido.setEnabled(b);
-        txt_u_user.setEnabled(b);
-        txt_u_password.setEnabled(b);
- 
-    }
-    public void limpiarCajasTexto(){
-        txt_u_id.setText("");
-        txt_u_nombre.setText("");
-        txt_u_apellido.setText("");
-        txt_u_user.setText("");
-        txt_u_password.setText("");
-    }
+    
+   
     
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        HabilitarIngreso(true);
-        limpiarCajasTexto();
-        btn_u_nuevo.setEnabled(false);
-        btn_u_guardar.setEnabled(true);
-        btn_u_editar.setEnabled(false);
-        btn_u_cancelar.setEnabled(true);
-        btn_u_eliminar.setEnabled(false);    
-        txt_u_id.setFocusable(true);
-        opcionBoton="Nuevo";
+        
     }  
     /**
      * @param args the command line arguments
@@ -427,66 +380,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         });
     }
     
-    private void verificarArchivo() throws IOException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if(!archivo.exists()){
-            archivo.createNewFile();
-            System.out.println("Archivo TXT creado en el Directorio local del proyecto");
-        }
-        else
-        {
-            System.out.println("El archivo ya existe");
-            leerArchivo();
-        }
-    }
     
-    private void leerArchivo() throws FileNotFoundException, IOException{
-        String linea = null;
-        int numeroRegistros=0;
-        BufferedReader leerFichero = new BufferedReader(new FileReader(archivo));
-        while ((linea = leerFichero.readLine()) != null) { 
-            numeroRegistros+=1;
-        }
-        leerFichero.close();
-        if(numeroRegistros==0)
-            System.out.println("ARCHIVO USUARIO.TXT VACIO");
-        else{
-            String [][]datos = new String[numeroRegistros][10];
-            int posicion=0;
-            String line = null;
-            BufferedReader leerArchivo = new BufferedReader(new FileReader(archivo));
-            while ((line = leerArchivo.readLine()) != null) {   
-                StringTokenizer mistokens = new StringTokenizer(line,"\t");
-                datos[posicion][0] = mistokens.nextToken().trim();
-                datos[posicion][1] = mistokens.nextToken().trim();
-                datos[posicion][2] = mistokens.nextToken().trim();
-                datos[posicion][3] = mistokens.nextToken().trim();
-                datos[posicion][4] = mistokens.nextToken().trim();
-                /*datos[posicion][5] = mistokens.nextToken().trim();
-                datos[posicion][6] = mistokens.nextToken().trim();
-                datos[posicion][7] = mistokens.nextToken().trim();
-                datos[posicion][8] = mistokens.nextToken().trim();
-                datos[posicion][9] = mistokens.nextToken().trim();*/
-                posicion+=1;
-            }
-            leerArchivo.close();
-            DefaultTableModel modelo = (DefaultTableModel) table_usuario.getModel();
-            limpiarTabla(modelo);
-            for (int i = 0; i < datos.length; i++) {
-                String []data = new String[11];
-                data[0]=String.valueOf(i+1);
-                for (int j = 0; j < datos[i].length; j++) {
-                    data[(j+1)]=datos[i][j];
-                }
-                modelo.addRow(data);
-            }            
-        }
-    }
-    public void limpiarTabla(DefaultTableModel modelo){   
-        for (int i = table_usuario.getRowCount() -1; i >= 0; i--){ 
-            modelo.removeRow(i); 
-        } 
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_u_actualizar;
     private javax.swing.JButton btn_u_buscar;

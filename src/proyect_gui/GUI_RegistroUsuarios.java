@@ -27,10 +27,10 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     int numeroEliminar=0;
     
     public GUI_RegistroUsuarios() throws IOException{
-        initComponents();
+       /*initComponents();
         HabilitarIngreso(false);
         verificarArchivo();
-        asignarEventoMouse();
+        asignarEventoMouse();*/
     }
       @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -322,7 +322,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void asignarEventoMouse(){
-        table_usuario.addMouseListener(new MouseAdapter() {
+       /* table_usuario.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent Mouse_event){
                 JTable tabla = (JTable)Mouse_event.getSource();
                 Point point = Mouse_event.getPoint();
@@ -341,7 +341,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
                     txt_u_password.setText(""+tabla.getValueAt(tabla.getSelectedRow(), 5));
                 }
             }
-        });
+        });*/
     }
     
     private void btn_u_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_u_guardarActionPerformed

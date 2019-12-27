@@ -418,7 +418,7 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         if(numeroRegistros==0)
             System.out.println("ARCHIVO USUARIO.TXT VACIO");
         else{
-            String [][]datos = new String[numeroRegistros][10];
+            String [][]datos = new String[numeroRegistros][5];
             int posicion=0;
             String line = null;
             BufferedReader leerArchivo = new BufferedReader(new FileReader(archivo));
@@ -613,11 +613,6 @@ public class GUI_RegistroUsuarios extends javax.swing.JFrame {
         opcionBoton="Nuevo";
     }//GEN-LAST:event_btn_u_nuevoActionPerformed
     
-   
-    
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        
-    }  
     /**
      * @param args the command line arguments
      */

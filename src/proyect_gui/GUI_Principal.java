@@ -212,7 +212,12 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void registroRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroRutasActionPerformed
         // TODO add your handling code here:
-        GUI_RegistroRutas c = new GUI_RegistroRutas();
+        GUI_RegistroRutas c = null;
+        try {
+            c = new GUI_RegistroRutas();
+        } catch (IOException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         c.setVisible(true);
         dispose();
     }//GEN-LAST:event_registroRutasActionPerformed
@@ -231,7 +236,12 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void ventaBoletosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ventaBoletosActionPerformed
         // TODO add your handling code here:
-        GUI_VentaDeBoletos b = new GUI_VentaDeBoletos();
+        GUI_VentaDeBoletos b = null;
+        try {
+            b = new GUI_VentaDeBoletos();
+        } catch (IOException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         b.setVisible(true);
         dispose();
     }//GEN-LAST:event_ventaBoletosActionPerformed

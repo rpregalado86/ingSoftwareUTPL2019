@@ -1,96 +1,89 @@
 
 package proyect_metodos;
 
-import java.io.*;
+
+import java.io.BufferedReader;
 import java.util.*;
-import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import proyect_clases.Pasajero;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class MetodoPasajero {
+    File archivo = new File("Pasajero.txt");
+    String resultadoPasajero [] = new String [5];
+    String [][]datos;
     
-    Vector vPrincipal = new Vector();
         
     //guarda datos en el vector
-    public void guardarPasajero(Pasajero unPasajero) {
-        vPrincipal.addElement(unPasajero);
+    public MetodoPasajero () throws IOException{
+        verificarArchivo(); 
     }
     
+    private void verificarArchivo() throws IOException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!archivo.exists()){
+            archivo.createNewFile();
+            System.out.println("Archivo TXT creado en el Directorio local del proyecto");
+        }
+        else
+        {
+            System.out.println("El archivo ya existe");
+            leerArchivo();
+        }
+    }
     //guardar archivo txt
-    public void guardarArchivoPasajero(Pasajero pasajero){
-        
-        try {
-            FileWriter fw = new FileWriter ("Pasajero.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-            pw.print(pasajero.getNombre_pasajero());
-            pw.print("|"+pasajero.getApellido_pasajero());
-            pw.print("|"+pasajero.getTipo_pasajero());
-            pw.print("|"+pasajero.getCedula_pasajero());
-            pw.println("|"+pasajero.getEdad_pasajero());
-            pw.close();
-        } catch (IOException e){
-            JOptionPane.showMessageDialog(null, e);
+    private void leerArchivo() throws FileNotFoundException, IOException{
+        String linea = null;
+        int numeroRegistros=0;
+        BufferedReader leerFicheroPasajero = new BufferedReader(new FileReader(archivo));
+        while ((linea = leerFicheroPasajero.readLine()) != null) { 
+            numeroRegistros+=1;
         }
-    }
-    
-    //mostrar los datos en el jtable
-    public DefaultTableModel listaPasajero(){
-        Vector cabeceras = new Vector();
-        cabeceras.addElement("NOMBRE");
-        cabeceras.addElement("APELLIDO");
-        cabeceras.addElement("CATEGORIA");
-        cabeceras.addElement("CEDULA");
-        cabeceras.addElement("EDAD");
-        
-        //Crear vector con nombre apellido pasajero cedula edad
-        DefaultTableModel mdlTablaP = new DefaultTableModel(cabeceras,0);
-        try {
-     
-            FileReader fr = new FileReader("Pasajero.txt");
-            BufferedReader br = new BufferedReader(fr);
-            String d;
-
-            while ((d=br.readLine())!=null){
-                StringTokenizer dato = new StringTokenizer (d,"|");
-                Vector x = new Vector();
-                while (dato.hasMoreTokens()){
-                    x.addElement(dato.nextToken());
-                }
-                mdlTablaP.addRow(x);
+        leerFicheroPasajero.close();
+        if(numeroRegistros==0)
+            System.out.println("ARCHIVO PASAJERO.TXT VACIO");
+        else{
+            datos = new String[numeroRegistros][5];
+            int posicion=0;
+            String line = null;
+            BufferedReader leerArchivo = new BufferedReader(new FileReader(archivo));
+            while ((line = leerArchivo.readLine()) != null) {   
+                StringTokenizer mistokens = new StringTokenizer(line,"\t");
+                datos[posicion][0] = mistokens.nextToken().trim();
+                datos[posicion][1] = mistokens.nextToken().trim();
+                datos[posicion][2] = mistokens.nextToken().trim();
+                datos[posicion][3] = mistokens.nextToken().trim();
+                datos[posicion][4] = mistokens.nextToken().trim();
+                posicion+=1;
             }
-        }catch (Exception e){
-        JOptionPane.showMessageDialog(null, e);
-        }
-        return mdlTablaP;
+            leerArchivo.close();       
+        } 
     }
-  
-    public Vector BuscarPasajero(String cedulaP){
-        try {
-            FileReader fr = new FileReader("Pasajero.txt");
-            BufferedReader br = new BufferedReader(fr);
-            String d;
-            while ((d=br.readLine())!=null){
-                StringTokenizer dato = new StringTokenizer (d,"|");
-                Vector x = new Vector();
-                while (dato.hasMoreTokens()){
-                    x.addElement(dato.nextToken());
-                    }
-                        String a = x.elementAt(3).toString();
-                        if(a.equals(cedulaP)){
-                            
-                            vPrincipal=x;
-                            System.out.println(vPrincipal);     
+    
+    public String [] ObtenerPasajero(String cedula) throws IOException{
+        
+        leerArchivo();
+        int encontrado=0;
+        boolean enc=false;
+        for (int i = 0; i < datos.length; i++) {
+                if(datos[i][0].equals(cedula)){
+                    encontrado=i;
+                    enc=true;
+                    break;
                 }
-            }br.close();
-            fr.close();
-        }catch (Exception e){
-        JOptionPane.showMessageDialog(null, e);
-        }       
-        return vPrincipal;
+        }     
+        
+        if(enc!=false){
+            resultadoPasajero [0] =datos[encontrado][0];
+            resultadoPasajero [1] =datos[encontrado][1];
+            resultadoPasajero [2] =datos[encontrado][2];
+            resultadoPasajero [3] =datos[encontrado][3];
+            resultadoPasajero [4] =datos[encontrado][4];
+        }else{
+            resultadoPasajero [0] =null;
+        }
+        return resultadoPasajero;
     }
-    
-    
 }

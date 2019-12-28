@@ -1,6 +1,9 @@
 package proyect_gui;
 
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyect_clases.Pasajero;
@@ -10,16 +13,19 @@ import proyect_metodos.MetodoPasajero;
 import proyect_metodos.MetodoRutas;
 
 
-public class GUI_VentaDeBoletos extends javax.swing.JFrame {
-    MetodoPasajero buscarP = new MetodoPasajero ();
-    MetodoRutas buscarR = new MetodoRutas ();
-    MetodoBoleto boleto = new MetodoBoleto();
-    Pasajero pasajero = new Pasajero();
-    DefaultTableModel mdlTablaP;
+public class GUI_VentaDeBoletos extends javax.swing.JFrame  {
     
-    public GUI_VentaDeBoletos() {
+    public MetodoPasajero mp;
+    public MetodoRutas mr;
+    public String [] pasajeroEncontrado = new String [5];
+    public String [] rutaEncontrada = new String [7];
+    
+    public GUI_VentaDeBoletos() throws IOException  {
         initComponents();
-         
+        mp = new MetodoPasajero();
+        mr = new MetodoRutas();
+        habilitarPasajero();
+        habilitarRuta();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -37,9 +43,9 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txt_venta_nombre = new javax.swing.JTextField();
-        btn_buscarr_pasajero = new javax.swing.JButton();
+        btn_buscar_pasajero = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        txt_busca_ruta = new javax.swing.JTextField();
+        txt_ventas_origen = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -49,6 +55,8 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
         txt_venta_fecha = new javax.swing.JTextField();
         txt_venta_hora = new javax.swing.JTextField();
         btn_buscar_ruta = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        txt_ventas_destino = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -58,11 +66,15 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
         txt_venta_total = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         btn_calcular_ruta = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btn_ventas_nuevo = new javax.swing.JButton();
         btn_p_guardar = new javax.swing.JButton();
         btn_p_eliminar = new javax.swing.JButton();
         btn_p_salir = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,10 +97,10 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
 
         jLabel5.setText("Categoria  Pasajero:");
 
-        btn_buscarr_pasajero.setText("Buscar");
-        btn_buscarr_pasajero.addActionListener(new java.awt.event.ActionListener() {
+        btn_buscar_pasajero.setText("Buscar");
+        btn_buscar_pasajero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_buscarr_pasajeroActionPerformed(evt);
+                btn_buscar_pasajeroActionPerformed(evt);
             }
         });
 
@@ -124,7 +136,7 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                                     .addComponent(txt_venta_tipoPasajero, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(181, 181, 181)
-                        .addComponent(btn_buscarr_pasajero, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_buscar_pasajero, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -149,11 +161,11 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                     .addComponent(txt_venta_edad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_venta_tipoPasajero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btn_buscarr_pasajero)
+                .addComponent(btn_buscar_pasajero)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel7.setText("Buscar Ruta:");
+        jLabel7.setText("ORIGEN");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("DATOS DE RUTA :");
@@ -171,6 +183,14 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
             }
         });
 
+        jLabel16.setText("DESTINO");
+
+        txt_ventas_destino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_ventas_destinoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -182,24 +202,27 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_venta_costo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(txt_venta_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_buscar_ruta, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(58, 58, 58)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel11)
-                            .addComponent(txt_venta_hora, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41))
+                        .addGap(58, 58, 58))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(29, 29, 29)
-                                .addComponent(txt_busca_ruta, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(txt_ventas_origen, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(jLabel16)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel11)
+                    .addComponent(txt_venta_hora, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(txt_ventas_destino))
+                .addGap(41, 41, 41))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,7 +232,9 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txt_busca_ruta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_ventas_origen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(txt_ventas_destino, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
@@ -248,6 +273,8 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
             }
         });
 
+        jLabel17.setText("Para encontrar una ruta es necesario ingresar la ciudad origen y la ciudad destino");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -274,11 +301,17 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                     .addComponent(btn_calcular_ruta, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel14)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -323,6 +356,12 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
             }
         });
 
+        jLabel18.setText("50 % Descuento");
+
+        jLabel19.setText("Niños <= 12");
+
+        jLabel20.setText("Tercera Edad >=65");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -335,6 +374,15 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                     .addComponent(btn_p_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_ventas_nuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel20))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,7 +395,13 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
                 .addComponent(btn_p_eliminar)
                 .addGap(27, 27, 27)
                 .addComponent(btn_p_salir)
-                .addContainerGap(255, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                .addComponent(jLabel18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel20)
+                .addGap(38, 38, 38))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -381,7 +435,27 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public void habilitarPasajero(){
+        txt_venta_nombre.setEnabled(false);
+        txt_venta_apellido.setEnabled(false); 
+        txt_venta_edad.setEnabled(false); 
+        txt_venta_tipoPasajero.setEnabled(false);
+        txt_venta_nombre.setText("");
+        txt_venta_apellido.setText(""); 
+        txt_venta_edad.setText(""); 
+        txt_venta_tipoPasajero.setText("");
+    }
+    
+    public void habilitarRuta(){
+        txt_venta_costo.setEnabled(false);
+        txt_venta_fecha.setEnabled(false); 
+        txt_venta_hora.setEnabled(false); 
+        txt_venta_costo.setText("");
+        txt_venta_fecha.setText(""); 
+        txt_venta_hora.setText(""); 
+    }
+    
     private void btn_p_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_p_salirActionPerformed
         // TODO add your handling code here:
         GUI_Principal b = new GUI_Principal();
@@ -390,12 +464,8 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_p_salirActionPerformed
 
     private void btn_ventas_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ventas_nuevoActionPerformed
-        // Limpia los Jtext:
-        txt_venta_busca_cedula.setText("");
-        txt_venta_nombre.setText("");
-        txt_venta_apellido.setText("");
-        txt_venta_edad.setText("");
-        txt_venta_tipoPasajero.setText("");
+        habilitarPasajero();
+        habilitarRuta();
 
     }//GEN-LAST:event_btn_ventas_nuevoActionPerformed
 
@@ -404,37 +474,27 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
       
     }//GEN-LAST:event_btn_p_eliminarActionPerformed
 
-    private void btn_buscarr_pasajeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarr_pasajeroActionPerformed
-        Vector v = new Vector();
-        String cedula = txt_venta_busca_cedula.getText();
-        v = buscarP.BuscarPasajero(cedula);
-        txt_venta_nombre.setText((String) v.elementAt(0));
-        txt_venta_apellido.setText((String) v.elementAt(1));
-        txt_venta_edad.setText((String) v.elementAt(2));
-        txt_venta_tipoPasajero.setText((String) v.elementAt(4));
-    }//GEN-LAST:event_btn_buscarr_pasajeroActionPerformed
+    private void btn_buscar_pasajeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscar_pasajeroActionPerformed
+        habilitarPasajero();
+        try {
+            pasajeroEncontrado = mp.ObtenerPasajero(txt_venta_busca_cedula.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(GUI_VentaDeBoletos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(pasajeroEncontrado[0]!=null){
+                txt_venta_nombre.setText(pasajeroEncontrado[1]);
+                txt_venta_apellido.setText(pasajeroEncontrado[2]);
+                txt_venta_edad.setText(pasajeroEncontrado[4]);
+                txt_venta_tipoPasajero.setText(pasajeroEncontrado[3]);
+        }else{       
+                JOptionPane.showMessageDialog(null, "PASAJERO NO REGISTRADO");
+        }
+    }//GEN-LAST:event_btn_buscar_pasajeroActionPerformed
 
     private void btn_p_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_p_guardarActionPerformed
         // TODO add your handling code here:
 
-        String cedulaP_b = txt_venta_busca_cedula.getText();
-        String nombreP_b = txt_venta_nombre.getText();
-        String apellidoP_b = txt_venta_apellido.getText();
-        String edadP_b = txt_venta_edad.getText();
-        String tipoP_b = txt_venta_tipoPasajero.getText();
-        
-        String rutaR_b = txt_busca_ruta.getText();
-        String costoR_b = txt_venta_costo.getText();
-        String fechaR_b = txt_venta_fecha.getText();
-        String horaR_b = txt_venta_hora.getText();
-        
-        int numBoletosB = Integer.parseInt(txt_venta_numboleto.getText());
-        int descuentoB = Integer.parseInt(txt_venta_descuento.getText());
-        int totalB = Integer.parseInt(txt_venta_total.getText());
-            
-        // FALTA CREAR BOLETOS E GENERAR ARCHIVO TXT
-        //boleto.setNombre_pasajero(nombreP_b);
-        
     }//GEN-LAST:event_btn_p_guardarActionPerformed
 
     private void txt_venta_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_venta_apellidoActionPerformed
@@ -444,13 +504,22 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_venta_apellidoActionPerformed
 
     private void btn_buscar_rutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscar_rutaActionPerformed
-        // TODO add your handling code here:
-        Vector v = new Vector();
-        String ruta = txt_busca_ruta.getText();
-        v = buscarR.BuscarRuta(ruta);
-        txt_venta_fecha.setText((String) v.elementAt(6));
-        txt_venta_costo.setText((String) v.elementAt(4));
-        txt_venta_hora.setText((String) v.elementAt (5));
+        habilitarRuta();
+        try {
+            rutaEncontrada = mr.ObtenerRuta(txt_ventas_origen.getText(),txt_ventas_destino.getText());
+            System.out.println("Ciudad enviada"+txt_ventas_origen.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(GUI_VentaDeBoletos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(rutaEncontrada[0]!=null){
+                txt_venta_costo.setText(rutaEncontrada[2]);
+                txt_venta_fecha.setText(rutaEncontrada[5]);
+                txt_venta_hora.setText(rutaEncontrada[6]);
+        }else{       
+                JOptionPane.showMessageDialog(null, "RUTA NO REGISTRADA");
+        }        // TODO add your handling code here:
+        
         
     }//GEN-LAST:event_btn_buscar_rutaActionPerformed
 
@@ -459,15 +528,12 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_venta_totalActionPerformed
 
     private void btn_calcular_rutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calcular_rutaActionPerformed
-        // TODO add your handling code here:
-        
-        int numBoletos = Integer.parseInt(txt_venta_numboleto.getText());
-        int costoRuta = Integer.parseInt(txt_venta_costo.getText());
-        int descuento = Integer.parseInt(txt_venta_descuento.getText());
-        int total = (numBoletos*costoRuta)-descuento;
-        String str = Integer.toString(total);
-        txt_venta_total.setText(str);
+
     }//GEN-LAST:event_btn_calcular_rutaActionPerformed
+
+    private void txt_ventas_destinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ventas_destinoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_ventas_destinoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -499,14 +565,18 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_VentaDeBoletos().setVisible(true);
+                try {
+                    new GUI_VentaDeBoletos().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(GUI_VentaDeBoletos.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_buscar_pasajero;
     private javax.swing.JButton btn_buscar_ruta;
-    private javax.swing.JButton btn_buscarr_pasajero;
     private javax.swing.JButton btn_calcular_ruta;
     private javax.swing.JButton btn_p_eliminar;
     private javax.swing.JButton btn_p_guardar;
@@ -519,7 +589,12 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -531,7 +606,6 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField txt_busca_ruta;
     private javax.swing.JTextField txt_venta_apellido;
     private javax.swing.JTextField txt_venta_busca_cedula;
     private javax.swing.JTextField txt_venta_costo;
@@ -543,5 +617,7 @@ public class GUI_VentaDeBoletos extends javax.swing.JFrame {
     private javax.swing.JTextField txt_venta_numboleto;
     private javax.swing.JTextField txt_venta_tipoPasajero;
     private javax.swing.JTextField txt_venta_total;
+    private javax.swing.JTextField txt_ventas_destino;
+    private javax.swing.JTextField txt_ventas_origen;
     // End of variables declaration//GEN-END:variables
 }

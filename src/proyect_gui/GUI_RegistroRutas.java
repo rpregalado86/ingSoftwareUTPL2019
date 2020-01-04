@@ -622,7 +622,7 @@ public class GUI_RegistroRutas extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) table_rutas.getModel();
         limpiarTabla(modelo);
         for (int i = 0; i < datos.length; i++) {
-            if (datos[i][4].equals(buscarOrigen)&&datos[i][5].equals(buscarDestino)){
+            if (datos[i][4].equalsIgnoreCase(buscarOrigen)&&datos[i][5].equalsIgnoreCase(buscarDestino)){
                 modelo.addRow(new Object[]{datos[i][0],datos[i][1],datos[i][2],datos[i][3],datos[i][4],datos[i][5],datos[i][6],datos[i][7]});
             }
         }        // TODO add your handling code here:

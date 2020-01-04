@@ -8,6 +8,8 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     public GUI_Principal() {
         initComponents();
+        reporteVentas.setEnabled(false);
+        reporteAcceso.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
